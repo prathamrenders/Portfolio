@@ -1,0 +1,1039 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Pratham Renders | Cinematic Video Editor</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🎬</text></svg>">
+  
+  <!-- Preload critical resources -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+  <noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"></noscript>
+  <link rel="preload" href="https://unpkg.com/aos@2.3.1/dist/aos.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+  <noscript><link rel="stylesheet" href="https://unpkg.com/aos@2.3.1/dist/aos.css"></noscript>
+
+  <style>
+    :root {
+      --primary: #D4AF37;
+      --primary-dark: #996515;
+      --bg: #000;
+      --card-bg: #1a1a1a;
+      --text: #f0f0f0;
+      --text-light: #b0b0b0;
+      --transition: all 0.3s cubic-bezier(0.25, 0.1, 0.25, 1);
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      overflow-x: hidden;
+      -webkit-text-size-adjust: 100%; /* Prevent font scaling in landscape */
+    }
+
+    /* Hero Section */
+    .hero-container {
+      min-height: 100dvh;
+      display: flex;
+      flex-direction: column;
+      background: linear-gradient(135deg, #000 0%, #111 100%);
+      position: relative;
+      overflow: hidden;
+      border-bottom: 1px solid rgba(212, 175, 55, 0.2);
+    }
+
+    .hero-container::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: radial-gradient(circle at 75% 30%, rgba(212, 175, 55, 0.03) 0%, transparent 50%);
+      z-index: 0;
+    }
+
+    /* Navigation */
+    nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: rgba(10, 10, 10, 0.5);
+      padding: 16px 5%;
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 1000;
+      border-bottom: 1px solid rgba(212, 175, 55, 0.1);
+      backdrop-filter: blur(5px);
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 15px;
+    }
+
+    nav a {
+      color: var(--text-light);
+      text-decoration: none;
+      font-weight: 600;
+      padding: 8px 22px;
+      border-radius: 30px;
+      transition: var(--transition);
+      font-size: clamp(0.9rem, 1vw, 1rem);
+    }
+
+    nav a:hover {
+      color: var(--primary);
+      background: rgba(212, 175, 55, 0.08);
+    }
+
+    .menu-toggle {
+      display: none;
+      background: none;
+      border: none;
+      color: var(--text-light);
+      font-size: 1.5rem;
+      cursor: pointer;
+      z-index: 1001;
+    }
+
+    /* Hero Grid */
+    .hero-grid {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 100px 5%;
+      margin-top: 100px;
+      margin-bottom: 60px;
+      gap: 40px;
+      flex-wrap: wrap;
+    }
+
+    .hero-left {
+      flex: 1 1 500px;
+      z-index: 1;
+    }
+
+    .hero-right {
+      flex: 1 1 500px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 1;
+    }
+
+    .hero-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2.5rem, 5vw, 3.5rem);
+      background: linear-gradient(to right, var(--primary), var(--primary-dark));
+      -webkit-background-clip: text;
+      color: transparent;
+      letter-spacing: 1px;
+      margin-bottom: 15px;
+      line-height: 1.2;
+    }
+
+    .hero-subtitle {
+      color: var(--text-light);
+      font-size: clamp(1rem, 2vw, 1.2rem);
+      margin-bottom: 40px;
+      font-weight: 400;
+    }
+
+    .hero-desc {
+      font-size: clamp(1rem, 1.1vw, 1.1rem);
+      line-height: 1.7;
+      color: var(--text-light);
+      margin-bottom: 30px;
+      max-width: 500px;
+    }
+
+    /* Unified Button Styles */
+    .cta {
+      display: inline-block;
+      padding: 14px 35px;
+      border-radius: 50px;
+      text-decoration: none;
+      font-weight: 600;
+      transition: var(--transition);
+      font-size: clamp(1rem, 1.1vw, 1.1rem);
+      letter-spacing: 0.5px;
+    }
+
+    .cta.primary {
+      background: var(--primary);
+      color: #000;
+      border: 2px solid transparent;
+    }
+
+    .cta.secondary {
+      border: 2px solid var(--primary);
+      color: var(--primary);
+      background: transparent;
+    }
+
+    .cta.primary:hover,
+    .cta.secondary:hover,
+    .contact-cta:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 5px 15px rgba(212, 175, 55, 0.2);
+    }
+
+    .cta.primary:hover {
+      background: transparent;
+      color: var(--primary);
+      border-color: var(--primary);
+    }
+
+    .cta.secondary:hover {
+      background: var(--primary);
+      color: #000;
+    }
+
+    .hero-ctas {
+      display: flex;
+      gap: 20px;
+    }
+
+    .hero-video {
+      width: 100%;
+      max-width: 500px;
+      aspect-ratio: 16/9;
+      height: auto;
+      border-radius: 12px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.4);
+      border: none;
+    }
+
+    /* Sections */
+    section {
+      padding: 100px 5%;
+      max-width: 1200px;
+      margin: auto;
+    }
+
+    h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2rem, 4vw, 2.5rem);
+      margin-bottom: 40px;
+      position: relative;
+      display: inline-block;
+      font-weight: 700;
+    }
+
+    h2::after {
+      content: "";
+      width: 80px;
+      height: 4px;
+      background: linear-gradient(90deg, var(--primary), var(--primary-dark));
+      position: absolute;
+      bottom: -12px;
+      left: 0;
+      border-radius: 2px;
+    }
+
+    /* Portfolio */
+    .portfolio {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(min(300px, 100%), 1fr));
+      gap: 25px;
+    }
+
+    .video {
+      background: var(--card-bg);
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+      transition: var(--transition);
+      border: 1px solid rgba(255,255,255,0.05);
+    }
+
+    .video:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 25px rgba(212, 175, 55, 0.15);
+    }
+
+    .video iframe {
+      width: 100%;
+      aspect-ratio: 16/9;
+      height: auto;
+      border: none;
+      display: block;
+      loading: lazy;
+    }
+
+    .video-content {
+      padding: 20px;
+    }
+
+    .video-content h4 {
+      font-size: clamp(1.1rem, 1.2vw, 1.2rem);
+      margin-bottom: 5px;
+      font-weight: 600;
+    }
+
+    .video-content p {
+      color: var(--text-light);
+      font-size: clamp(0.9rem, 0.95vw, 0.95rem);
+      font-weight: 400;
+    }
+
+    /* About */
+    #about {
+      background: rgba(10, 10, 10, 0.5);
+    }
+
+    #about p {
+      font-size: clamp(1rem, 1.1vw, 1.1rem);
+      line-height: 1.8;
+      max-width: 800px;
+      margin: 0 auto;
+      text-align: left;
+      font-weight: 400;
+      color: var(--text);
+    }
+
+    /* Services */
+    .services-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(min(280px, 100%), 1fr));
+      gap: 25px;
+      max-width: 1000px;
+      margin: 0 auto;
+    }
+
+    .service-card {
+      background: var(--card-bg);
+      padding: 35px 30px;
+      border-radius: 8px;
+      transition: var(--transition);
+      border: 1px solid rgba(255,255,255,0.05);
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .service-card::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 4px;
+      background: var(--primary);
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+    }
+
+    .service-card:hover::before {
+      transform: scaleX(1);
+    }
+
+    .service-card i {
+      color: var(--primary);
+      font-size: clamp(2rem, 2.2vw, 2.2rem);
+      margin-bottom: 20px;
+      transition: var(--transition);
+    }
+
+    .service-card:hover i {
+      transform: scale(1.1);
+    }
+
+    .service-card h3 {
+      font-size: clamp(1.2rem, 1.3vw, 1.3rem);
+      margin-bottom: 12px;
+      font-weight: 600;
+    }
+
+    .service-card p {
+      color: var(--text-light);
+      font-size: clamp(0.9rem, 0.95vw, 0.95rem);
+      font-weight: 400;
+      flex-grow: 1;
+    }
+
+    /* Contact Section */
+    .contact {
+      text-align: center;
+      padding: 100px 5%;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .contact p {
+      max-width: 600px;
+      margin: 0 auto 60px;
+      color: var(--text-light);
+      font-size: clamp(1rem, 1.1vw, 1.1rem);
+      line-height: 1.8;
+    }
+
+    #contact-form {
+      max-width: 500px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      gap: 30px;
+      padding: 40px;
+      background: var(--card-bg);
+      border-radius: 12px;
+      border: 1px solid rgba(212, 175, 55, 0.1);
+      box-shadow: 0 8px 30px rgba(0,0,0,0.2);
+    }
+
+    .form-group {
+      position: relative;
+    }
+
+    #contact-form input,
+    #contact-form textarea {
+      width: 100%;
+      padding: 16px 20px;
+      border-radius: 8px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      background: rgba(0,0,0,0.2);
+      color: var(--text);
+      font-family: 'Inter', sans-serif;
+      font-size: clamp(1rem, 1.05vw, 1.05rem);
+      transition: var(--transition);
+    }
+
+    #contact-form input::placeholder,
+    #contact-form textarea::placeholder {
+      color: var(--text-light);
+      opacity: 0.7;
+    }
+
+    #contact-form input:focus,
+    #contact-form textarea:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.1);
+      background: rgba(0,0,0,0.3);
+    }
+
+    #contact-form textarea {
+      resize: vertical;
+      min-height: 180px;
+    }
+
+    .contact-cta {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      padding: 16px 40px;
+      border-radius: 50px;
+      background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+      color: #000;
+      border: none;
+      text-decoration: none;
+      font-weight: 600;
+      transition: var(--transition);
+      font-size: clamp(1rem, 1.1vw, 1.1rem);
+      letter-spacing: 0.5px;
+      cursor: pointer;
+      width: 100%;
+      margin: 10px auto 0;
+      box-shadow: 0 4px 15px rgba(212, 175, 55, 0.3);
+    }
+
+    .contact-cta:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 20px rgba(212, 175, 55, 0.4);
+      background: linear-gradient(135deg, var(--primary-dark), var(--primary));
+    }
+
+    .contact-cta i {
+      transition: transform 0.3s ease;
+    }
+
+    .contact-cta:hover i {
+      transform: translateX(3px);
+    }
+
+    /* Social Links */
+    .social-links {
+      margin-top: 60px;
+      display: flex;
+      justify-content: center;
+      gap: 25px;
+    }
+
+    .social-links a {
+      color: var(--text-light);
+      font-size: clamp(1.2rem, 1.4vw, 1.4rem);
+      transition: var(--transition);
+      width: clamp(40px, 5vw, 50px);
+      height: clamp(40px, 5vw, 50px);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 1px solid rgba(255,255,255,0.1);
+      text-decoration: none;
+      background: rgba(0,0,0,0.2);
+    }
+
+    .social-links a:hover {
+      color: var(--primary);
+      border-color: var(--primary);
+      transform: translateY(-5px);
+      background: rgba(212, 175, 55, 0.05);
+      box-shadow: 0 5px 15px rgba(212, 175, 55, 0.1);
+    }
+
+    /* Footer */
+    footer {
+      text-align: center;
+      padding: 30px;
+      font-size: clamp(0.8rem, 0.9vw, 0.9rem);
+      color: var(--text-light);
+      border-top: 1px solid rgba(255,255,255,0.1);
+    }
+
+    /* Back to Top */
+    #backToTop {
+      position: fixed;
+      bottom: 30px;
+      right: 30px;
+      background: var(--primary);
+      color: #000;
+      border: none;
+      width: clamp(45px, 5vw, 50px);
+      height: clamp(45px, 5vw, 50px);
+      border-radius: 50%;
+      font-size: 1.2rem;
+      cursor: pointer;
+      display: none;
+      z-index: 1000;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+      transition: var(--transition);
+    }
+
+    #backToTop:hover {
+      transform: translateY(-3px) scale(1.05);
+    }
+
+    /* Toast Notification System */
+    .toast-notification {
+      position: fixed;
+      right: 30px;
+      bottom: 30px;
+      z-index: 10000;
+      max-width: 350px;
+      width: 100%;
+      font-family: 'Inter', sans-serif;
+    }
+
+    .toast {
+      padding: 18px 25px;
+      margin-bottom: 15px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      background: var(--card-bg);
+      box-shadow: 0 8px 30px rgba(0,0,0,0.3);
+      border-left: 4px solid;
+      transform: translateX(120%);
+      opacity: 0;
+      transition: all 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+      border-left-color: var(--primary);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(212, 175, 55, 0.2);
+    }
+
+    .toast.show {
+      transform: translateX(0);
+      opacity: 1;
+    }
+
+    .toast.success {
+      border-left-color: #4CAF50;
+    }
+
+    .toast.error {
+      border-left-color: #F44336;
+    }
+
+    .toast-icon {
+      font-size: 1.8rem;
+      margin-right: 15px;
+      flex-shrink: 0;
+    }
+
+    .toast.success .toast-icon {
+      color: #4CAF50;
+    }
+
+    .toast.error .toast-icon {
+      color: #F44336;
+    }
+
+    .toast-content {
+      flex-grow: 1;
+    }
+
+    .toast-title {
+      font-weight: 600;
+      font-size: 1rem;
+      color: var(--text);
+      margin-bottom: 3px;
+    }
+
+    .toast-message {
+      font-size: 0.9rem;
+      color: var(--text-light);
+      line-height: 1.5;
+    }
+
+    .toast-close {
+      background: transparent;
+      border: none;
+      color: var(--text-light);
+      font-size: 1rem;
+      margin-left: 15px;
+      cursor: pointer;
+      opacity: 0.7;
+      transition: var(--transition);
+      flex-shrink: 0;
+      padding: 5px;
+    }
+
+    .toast-close:hover {
+      opacity: 1;
+      color: var(--primary);
+    }
+
+    /* Progress bar for auto-dismiss */
+    .toast-progress {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      height: 3px;
+      width: 100%;
+      background: rgba(255,255,255,0.1);
+      border-radius: 0 0 12px 12px;
+      overflow: hidden;
+    }
+
+    .toast-progress::before {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      height: 100%;
+      width: 100%;
+      background: var(--primary);
+      animation: progress 5s linear forwards;
+    }
+
+    .toast.success .toast-progress::before {
+      background: #4CAF50;
+    }
+
+    .toast.error .toast-progress::before {
+      background: #F44336;
+    }
+
+    @keyframes progress {
+      100% {
+        transform: translateX(-100%);
+      }
+    }
+
+    /* Responsive Breakpoints */
+    @media (max-width: 1024px) {
+      .hero-grid {
+        margin-top: 80px;
+      }
+      .service-card {
+        padding: 30px 25px;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .hero-grid {
+        flex-direction: column;
+        padding: 80px 5%;
+        margin-top: 60px;
+      }
+      .hero-left, .hero-right {
+        flex: 1 1 100%;
+      }
+      .hero-ctas {
+        flex-direction: column;
+        gap: 15px;
+      }
+      section {
+        padding: 80px 5%;
+      }
+      #contact-form {
+        padding: 30px;
+        gap: 25px;
+      }
+      .contact p {
+        margin-bottom: 40px;
+      }
+      .social-links {
+        margin-top: 50px;
+      }
+      .toast-notification {
+        right: 20px;
+        left: 20px;
+        max-width: calc(100% - 40px);
+        bottom: 20px;
+      }
+      .toast {
+        padding: 15px 20px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      nav {
+        padding: 12px 5%;
+      }
+      .nav-links {
+        position: fixed;
+        top: 0;
+        right: -100%;
+        width: 70%;
+        height: 100dvh;
+        background: rgba(10, 10, 10, 0.95);
+        backdrop-filter: blur(10px);
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        gap: 30px;
+        transition: var(--transition);
+        z-index: 1000;
+      }
+      .nav-links.active {
+        right: 0;
+      }
+      .menu-toggle {
+        display: block;
+      }
+      .hero-title {
+        font-size: 2.5rem;
+      }
+      .hero-subtitle {
+        font-size: 1.1rem;
+      }
+      .service-card {
+        padding: 25px 20px;
+      }
+      #contact-form input,
+      #contact-form textarea {
+        padding: 14px 18px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Hero Section -->
+  <div class="hero-container">
+    <nav>
+      <button class="menu-toggle" id="menuToggle">
+        <i class="fas fa-bars"></i>
+      </button>
+      <div class="nav-links" id="navLinks">
+        <a href="#portfolio">Portfolio</a>
+        <a href="#about">About</a>
+        <a href="#services">Services</a>
+        <a href="#contact">Contact</a>
+      </div>
+    </nav>
+    <div class="hero-grid">
+      <div class="hero-left" data-aos="fade-right">
+        <h1 class="hero-title">Pratham Renders</h1>
+        <p class="hero-subtitle">Cinematic Video Editor & Motion Designer</p>
+        <p class="hero-desc">I craft cinematic stories for brands, creators, and agencies — frame by frame, emotion by emotion.</p>
+        <div class="hero-ctas">
+          <a href="#portfolio" class="cta primary">Watch Showreel</a>
+          <a href="#contact" class="cta secondary">Start a Project</a>
+        </div>
+      </div>
+      <div class="hero-right" data-aos="fade-left">
+        <iframe 
+          src="https://www.youtube.com/embed/3NWux1Ac9k4?autoplay=1&mute=1&loop=1&playlist=3NWux1Ac9k4"
+          frameborder="0"
+          allow="accelerometer; autoplay; encrypted-media; gyroscope"
+          allowfullscreen
+          class="hero-video"
+          loading="lazy">
+        </iframe>
+      </div>
+    </div>
+  </div>
+
+  <!-- Portfolio Section -->
+  <section id="portfolio">
+    <h2>Featured Projects</h2>
+    <div class="portfolio">
+      <div class="video" data-aos="fade-up">
+        <iframe src="https://www.youtube.com/embed/6kYRUsXtS4s" loading="lazy" allowfullscreen></iframe>
+        <div class="video-content">
+          <h4>Commercial Ad</h4>
+          <p>4K Cinematic Edit</p>
+        </div>
+      </div>
+      <div class="video" data-aos="fade-up" data-aos-delay="100">
+        <iframe src="https://www.youtube.com/embed/WUB2pSkwN2M" loading="lazy" allowfullscreen></iframe>
+        <div class="video-content">
+          <h4>Music Video</h4>
+          <p>Color Grading + Visual FX</p>
+        </div>
+      </div>
+      <div class="video" data-aos="fade-up" data-aos-delay="200">
+        <iframe src="https://www.youtube.com/embed/3NWux1Ac9k4" loading="lazy" allowfullscreen></iframe>
+        <div class="video-content">
+          <h4>Brand Film</h4>
+          <p>Motion Graphics Integration</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- About Section -->
+  <section id="about">
+    <h2>About Me</h2>
+    <p>Hi, I'm Pratham Gyawali, a passionate video editor at the beginning of my creative journey. I specialize in using Adobe Premiere Pro, After Effects, and Photoshop to bring visuals to life.</p>
+    <br>
+    <p>I love transforming raw footage into compelling narratives for brands, creators, and agencies. Whether it's animation, color grading, or enhancing storytelling, I'm all in.</p>
+    <br>
+    <p>I'm eager to grow, learn, and collaborate on exciting projects. If you're looking for someone dedicated and creative — let's connect!</p>
+  </section>
+
+  <!-- Services Section -->
+  <section id="services">
+    <h2 data-aos="fade-up">Services</h2>
+    <div class="services-grid">
+      <div class="service-card" data-aos="fade-up" data-aos-delay="0">
+       <i class="fas fa-video"></i>
+        <h3>Video Editing</h3>
+        <p>Professional edits for YouTube and social content — clean and engaging.</p>
+      </div>
+      <div class="service-card" data-aos="fade-up" data-aos-delay="100">
+        <i class="fas fa-film"></i>
+        <h3>Motion Graphics</h3>
+        <p>Animated text, logos, and transitions that add style and clarity to your videos.</p>
+      </div>
+      <div class="service-card" data-aos="fade-up" data-aos-delay="200">
+        <i class="fas fa-image"></i>
+        <h3>Thumbnail Editing</h3>
+        <p>Eye-catching YouTube thumbnails designed to boost clicks and stand out in the feed.</p>
+      </div>
+      <div class="service-card" data-aos="fade-up" data-aos-delay="300">
+        <i class="fas fa-pencil-alt"></i>
+        <h3>Script Writing</h3>
+        <p>Clear, compelling video scripts crafted to engage viewers and tell your story effectively.</p>
+      </div>
+      <div class="service-card" data-aos="fade-up" data-aos-delay="400">
+        <i class="fas fa-volume-up"></i>
+        <h3>Sound Design</h3>
+        <p>Crisp, immersive audio with effects, mixing, and cleanup to elevate your video's impact.</p>
+      </div>
+      <div class="service-card" data-aos="fade-up" data-aos-delay="500">
+        <i class="fas fa-cogs"></i>
+        <h3>Visual Effects</h3>
+        <p>Creative VFX for storytelling — from motion tracking to compositing and cinematic enhancements.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Contact Section -->
+  <section id="contact" class="contact">
+    <h2>Let's Collaborate</h2>
+    <p>Ready to elevate your project? Get in touch to discuss rates, timelines, and creative vision.</p>
+    
+    <form id="contact-form" action="https://formspree.io/f/mdkggkbl" method="POST">
+      <div class="form-group">
+        <input type="text" name="name" placeholder="Your Name" required>
+      </div>
+      <div class="form-group">
+        <input type="email" name="email" placeholder="Your Email" required>
+      </div>
+      <div class="form-group">
+        <textarea name="message" placeholder="Your Message" rows="5" required></textarea>
+      </div>
+      <button type="submit" class="contact-cta">
+        <i class="fas fa-paper-plane"></i>
+        Send Message
+      </button>
+    </form>
+    
+    <div class="social-links">
+      <a href="https://x.com/PrathamRenders" target="_blank"><i class="fab fa-twitter"></i></a>
+      <a href="https://vimeo.com" target="_blank"><i class="fab fa-vimeo-v"></i></a>
+      <a href="https://www.linkedin.com/in/prathamgyawali/" target="_blank"><i class="fab fa-linkedin-in"></i></a>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    &copy; 2025 Pratham Renders. Crafted with <span style="color: var(--primary)">❤️</span>
+  </footer>
+
+  <!-- Back to Top Button -->
+  <button id="backToTop"><i class="fas fa-chevron-up"></i></button>
+
+  <!-- Toast Notifications Container -->
+  <div class="toast-notification" id="toastContainer"></div>
+
+  <!-- Scripts -->
+  <script>
+    // Mobile Navigation Toggle
+    const menuToggle = document.getElementById('menuToggle');
+    const navLinks = document.getElementById('navLinks');
+
+    menuToggle.addEventListener('click', () => {
+      navLinks.classList.toggle('active');
+      menuToggle.innerHTML = navLinks.classList.contains('active') 
+        ? '<i class="fas fa-times"></i>' 
+        : '<i class="fas fa-bars"></i>';
+    });
+
+    // Close menu when clicking a nav link
+    document.querySelectorAll('.nav-links a').forEach(link => {
+      link.addEventListener('click', () => {
+        navLinks.classList.remove('active');
+        menuToggle.innerHTML = '<i class="fas fa-bars"></i>';
+      });
+    });
+
+    // Back to Top Button
+    const backToTop = document.getElementById('backToTop');
+    window.onscroll = () => {
+      backToTop.style.display = window.scrollY > 400 ? 'block' : 'none';
+    };
+    backToTop.onclick = () => {
+      window.scrollTo({top: 0, behavior: 'smooth'});
+    };
+
+    // Toast Notification System
+    function showToast(type, title, message, duration = 5000) {
+      const toastContainer = document.getElementById('toastContainer');
+      const toastId = 'toast-' + Date.now();
+      
+      const icons = {
+        success: '<i class="fas fa-check-circle toast-icon"></i>',
+        error: '<i class="fas fa-exclamation-triangle toast-icon"></i>'
+      };
+
+      const toast = document.createElement('div');
+      toast.className = `toast ${type}`;
+      toast.id = toastId;
+      toast.innerHTML = `
+        ${icons[type]}
+        <div class="toast-content">
+          <div class="toast-title">${title}</div>
+          <div class="toast-message">${message}</div>
+        </div>
+        <button class="toast-close" onclick="dismissToast('${toastId}')">
+          <i class="fas fa-times"></i>
+        </button>
+        <div class="toast-progress"></div>
+      `;
+
+      toastContainer.appendChild(toast);
+      
+      // Trigger the show animation
+      setTimeout(() => {
+        toast.classList.add('show');
+      }, 10);
+
+      // Auto-dismiss after duration
+      if (duration) {
+        setTimeout(() => {
+          dismissToast(toastId);
+        }, duration);
+      }
+    }
+
+    function dismissToast(toastId) {
+      const toast = document.getElementById(toastId);
+      if (toast) {
+        toast.classList.remove('show');
+        setTimeout(() => {
+          toast.remove();
+        }, 500);
+      }
+    }
+
+    // Form handling
+    const form = document.getElementById('contact-form');
+
+    if (form) {
+      form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        
+        const submitButton = form.querySelector('button[type="submit"]');
+        const originalContent = submitButton.innerHTML;
+        submitButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sending...';
+        submitButton.disabled = true;
+
+        try {
+          const response = await fetch(form.action, {
+            method: 'POST',
+            body: new FormData(form),
+            headers: { 'Accept': 'application/json' }
+          });
+
+          if (response.ok) {
+            // Show success toast
+            showToast(
+              'success', 
+              'Message Sent!', 
+              "I'll get back to you within 24 hours. Thank you!",
+              6000
+            );
+            
+            // Reset form
+            form.reset();
+          } else {
+            throw new Error('Submission failed');
+          }
+        } catch (error) {
+          // Show error toast
+          showToast(
+            'error', 
+            'Sending Failed', 
+            'Please try again or email me directly at arikagyawali09@gmail.com',
+            8000
+          );
+        } finally {
+          submitButton.innerHTML = originalContent;
+          submitButton.disabled = false;
+        }
+      });
+    }
+
+    // Load AOS animation library
+    document.addEventListener('DOMContentLoaded', () => {
+      const aosScript = document.createElement('script');
+      aosScript.src = 'https://unpkg.com/aos@2.3.1/dist/aos.js';
+      aosScript.onload = () => AOS.init({ once: true, duration: 800 });
+      document.body.appendChild(aosScript);
+    });
+  </script>
+</body>
+</html>
